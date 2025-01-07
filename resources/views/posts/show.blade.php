@@ -56,6 +56,21 @@
                                     <p class="font-semibold">{{ $comment->user->name }}</p>
                                     <p>{{ $comment->content }}</p>
                                 </div>
+
+                                <!-- Edit/Delete Buttons -->
+                                @if (auth()->check() && auth()->id() === $comment->user_id)
+                                    <div class="flex space-x-2">
+                                        <!-- Edit Button -->
+                                        <a href="{{ route('comments.edit', $comment->id) }}" class="text-blue-500">Edit</a>
+
+                                        <!-- Delete Button -->
+                                        <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?')" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-500">Delete</button>
+                                        </form>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     @endforeach
